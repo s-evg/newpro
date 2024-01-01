@@ -1,0 +1,71 @@
+#!/bin/bash
+
+##############################################
+# Функция создает каталог и переходит в него.
+# Параметры:
+#   $1 - Имя каталога
+# Возвращаемые значения:
+#   0 - Успех
+#   1 - Ошибка
+# Создаёт и активирует вирт окружение
+# Создаёт файл .gitignore с дефолтным содержимым
+# Создаём пустой файл requirements.txt 
+# Делает первый коммит 
+# Запускает проект в PyCharm
+##############################################
+
+create_and_cd_directory() {
+    dir_name="$1"
+    
+    # Проверяем переданное имя каталога
+    if [ -z "$dir_name" ]; then
+        echo "Ошибка: Имя каталога не указано."
+        exit 1
+    fi
+
+    # Проверяем, существует ли каталог
+    if [ -d "$dir_name" ]; then
+        echo "Каталог \"$dir_name\" уже существует."
+        printf "Введите новое имя каталога: "
+        read new_dir_name
+        create_and_cd_directory "$new_dir_name"
+        exit $?
+    fi
+
+    # Создаем каталог
+    mkdir "$dir_name"
+    
+    if [ $? -eq 0 ]; then
+#         echo "Каталог \"$dir_name\" успешно создан."
+        # Переходим в созданный каталог
+        cd "$dir_name" || exit 1
+        echo "Создал каталог: $(pwd)"
+    else
+        echo "Ошибка при создании каталога \"$dir_name\"."
+        exit 1
+    fi
+}
+
+pycharm_run() {
+    /home/artur/Soft/pycharm-community-2023.2.3/bin/pycharm.sh .
+}
+
+newapp() {
+	python3.10 -m venv venv &&
+	source venv/bin/activate &&
+	pip freeze > requirements.txt &&
+	git init && echo -e ".idea/\nvenv/\n__pycache__/" > .gitignore &&
+	git add . &&
+	git commit -a -m "init app" 
+	pycharm_run .
+	}
+
+# Проверяем, передано ли имя каталога в параметрах
+if [ -z "$1" ]; then
+    echo "Ошибка: Имя каталога не указано."
+    exit 1
+fi
+
+# Вызываем функцию с передачей имени каталога в качестве параметра
+create_and_cd_directory "$1"
+newapp
