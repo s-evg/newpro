@@ -14,8 +14,8 @@
 * Дибо создать свою, и добавить в PATH:  
   `echo 'export PATH=$PATH:/новый/путь' >> ~/.bashrc && source ~/.bashrc`
 * Сделать скрипт исполняемым: `chmod +x newapp`
-* Создать новое приложение (проект):  
-  `newapp app_name`
+* Создать проект:  
+  `newpro project_name`
 
 
 
