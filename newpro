@@ -46,9 +46,6 @@ create_and_cd_directory() {
     fi
 }
 
-pycharm_run() {
-    /home/artur/Soft/pycharm-community-2023.2.3/bin/pycharm.sh .
-}
 
 newapp() {
 	python3.10 -m venv venv &&
@@ -57,7 +54,7 @@ newapp() {
 	git init && echo -e ".idea/\nvenv/\n__pycache__/" > .gitignore &&
 	git add . &&
 	git commit -a -m "init app" 
-	pycharm_run .
+	pycharm .
 	}
 
 # Проверяем, передано ли имя каталога в параметрах
